@@ -34,7 +34,7 @@ router.delete("/:id", async (req, res) => {
   const id = req.params.id;
   if (id) {
     try {
-      res.json((await db.posts.del(id))[0]);
+      res.json((await db.chirps.del(id))[0]);
     } catch (err) {
       if (err) throw err;
       res.sendStatus(200);
