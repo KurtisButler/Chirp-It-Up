@@ -7,7 +7,7 @@ const ChirpCard = ({ userid, content, created, location, handleEditChirp, handle
             <p>{content}</p>
             <small>{created}</small>
             <small>{location}</small>
-            <button className="btn btn-light" onClick={() => handleEditChirp(id)}>Edit Chirp</button>
+            <button className="btn btn-danger" onClick={() => handleEditChirp(id)}>Edit Chirp</button>
             <button className="btn btn-danger" onClick={() => handleDeleteChirp(id)}>Delete Chirp</button>
         </div>
     )
