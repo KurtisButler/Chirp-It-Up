@@ -1,45 +1,56 @@
-import React, { useState } from "react";
-import { v4 as uuidv4 } from "uuid";
-import moment from "moment";
+import React, { useState, useEffect } from "react";
 import ChirpCard from "./components/ChirpCard.jsx";
 
 const App = () => {
   const [username, setUsername] = useState("");
   const [message, setMessage] = useState("");
-  const [chirps, setChirps] = useState([
-    {
-      id: uuidv4(),
-      username: "Josh",
-      message: "This is the chirp body!",
-      created: moment().format("dddd, MMMM Do YYYY, h:mm:ss a"),
-    },
-    {
-      id: uuidv4(),
-      username: "Haylee",
-      message: "Hello!",
-      created: moment().format("dddd, MMMM Do YYYY, h:mm:ss a"),
-    },
-    {
-      id: uuidv4(),
-      username: "Garrett",
-      message: "I'm not mad!",
-      created: moment().format("dddd, MMMM Do YYYY, h:mm:ss a"),
-    },
-  ]);
+  const [chirps, setChirps] = useState([]);
 
+  useEffect(() => {
+    getChirps();
+  }, []);
+
+  const handleDeleteChirp = (id) => {
+    fetch(`http://localhost:3000/api/chirps/${id}`, {
+      method: 'DELETE'
+    });
+    getChirps();
+  }
   const handleUsernameChange = (e) => setUsername(e.target.value);
   const handleMessageChange = (e) => setMessage(e.target.value);
   const handleChirpSubmit = (e) => {
     e.preventDefault();
 
-    const newChirp = {
-      id: uuidv4(),
-      username: username,
-      message: message,
-      created: moment().format("dddd, MMMM Do YYYY, h:mm:ss a"),
-    };
+    postChirp();
+    
 
-    setChirps([...chirps, newChirp]);
+  };
+
+  const getChirps = () => {
+    fetch('http://localhost:3000/api/chirps')
+      .then(res => res.json())
+      .then(res => setChirps(res))
+  }
+
+  const postChirp = async () => {
+    console.log('test');
+    const userData = {
+      userid: 1,
+      content: message,
+      location: 'unknown'
+    };
+    try {
+      const add = await fetch('http://localhost:3000/api/chirps/', {
+        method: "POST",
+        headers: {
+          "Content-Type": 'application/json'
+        },
+        body: JSON.stringify(userData)
+      })
+    } catch {
+      console.log(e);
+    }
+
   };
 
   return (
@@ -58,7 +69,7 @@ const App = () => {
           </div>
         </div>
         <div className="row">
-          <form action="">
+          <form>
             <div className="form-group mb-2">
               <input
                 type="text"
@@ -70,8 +81,8 @@ const App = () => {
               />
               <textarea
                 className="form-control mb-2"
-                              aria-label="With textarea"
-                              placeholder="(500 characters max)"
+                aria-label="With textarea"
+                placeholder="(500 characters max)"
                 value={message}
                 onChange={handleMessageChange}
                 cols="30"
@@ -86,9 +97,12 @@ const App = () => {
             {chirps.map((chirp) => (
               <ChirpCard
                 key={chirp.id}
-                username={chirp.username}
-                message={chirp.message}
-                created={chirp.created}
+                userid={chirp.name}
+                content={chirp.content}
+                location={chirp.location}
+                created={chirp._created}
+                id={chirp.id}
+                handleDeleteChirp={handleDeleteChirp}
               />
             ))}
           </div>

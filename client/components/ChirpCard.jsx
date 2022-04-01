@@ -1,13 +1,16 @@
 import React from 'react'
 
-const ChirpCard = ({username, message, created}) => {
+const ChirpCard = ({ userid, content, created, location, handleEditChirp, handleDeleteChirp }) => {
     return (
-        <>
-            <h3>{username}</h3>
-            <p>{message}</p>
+        <div>
+            <h2>{userid}</h2>
+            <p>{content}</p>
             <small>{created}</small>
-        </>
+            <small>{location}</small>
+            <button className="btn btn-light" onClick={() => handleEditChirp(id)}>Edit</button>
+            <button className="btn btn-danger" onClick={() => handleDeleteChirp(id)}>Delete Chirp</button>
+        </div>
     )
-}
+};
 
 export default ChirpCard;
