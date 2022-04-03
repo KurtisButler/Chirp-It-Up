@@ -1,9 +1,9 @@
 import React from 'react'
 
-const ChirpCard = ({ userid, content, created, location, handleEditChirp, handleDeleteChirp }) => {
+const ChirpCard = ({ username, content, created, location, handleEditChirp, handleDeleteChirp }) => {
     return (
         <div>
-            <h2>{userid}</h2>
+            <h2>{username}</h2>
             <p>{content}</p>
             <small>{created}</small>
             <small>{location}</small>

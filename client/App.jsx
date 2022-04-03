@@ -3,27 +3,50 @@ import ChirpCard from "./components/ChirpCard.jsx";
 
 const App = () => {
   const [username, setUsername] = useState("");
-  const [message, setMessage] = useState("");
+  const [content, setContent] = useState("");
   const [chirps, setChirps] = useState([]);
 
   useEffect(() => {
-    getChirps();
+    // get request
+    fetch("http://localhost:3000/api/chirps")
+    .then(res=> res.json())
+    .then(chirps => setChirps(chirps))
+    .catch(err => console.log(err));
   }, []);
 
-  const handleDeleteChirp = (id) => {
-    fetch(`http://localhost:3000/api/chirps/${id}`, {
-      method: 'DELETE'
-    });
-    getChirps();
-  }
+
   const handleUsernameChange = (e) => setUsername(e.target.value);
-  const handleMessageChange = (e) => setMessage(e.target.value);
-  const handleChirpSubmit = (e) => {
+  const handleContentChange = (e) => setContent(e.target.value);
+  const handleChirpSubmit = async (e) => {
     e.preventDefault();
 
-    postChirp();
-    
+    const newUser = {
+      name: 
+    }
 
+    fetch("http:localhost:3000/api/chirps", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      // body:
+    })
+
+
+
+
+
+
+    const newChirp = {
+      userid: 1,
+      content: content,
+      location: "Birmingham, AL"
+    };
+
+    // post request
+    fetch("http:localhost:3000/api/chirps", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      // body:
+    })
   };
 
   const getChirps = () => {
@@ -36,7 +59,7 @@ const App = () => {
     console.log('test');
     const userData = {
       userid: 1,
-      content: message,
+      content: content,
       location: 'unknown'
     };
     try {
@@ -52,6 +75,7 @@ const App = () => {
     }
 
   };
+
 
   return (
     <>
@@ -83,8 +107,8 @@ const App = () => {
                 className="form-control mb-2"
                 aria-label="With textarea"
                 placeholder="(500 characters max)"
-                value={message}
-                onChange={handleMessageChange}
+                value={content}
+                onChange={handleContentChange}
                 cols="30"
                 rows="10"
               ></textarea>
@@ -97,7 +121,7 @@ const App = () => {
             {chirps.map((chirp) => (
               <ChirpCard
                 key={chirp.id}
-                userid={chirp.name}
+                username={chirp.name}
                 content={chirp.content}
                 location={chirp.location}
                 created={chirp._created}

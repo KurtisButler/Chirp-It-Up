@@ -1,5 +1,6 @@
 import * as mysql from "mysql";
 import chirps from "./chirps";
+import users from "./users";
 
 export const Connection = mysql.createConnection({
   host: "localhost",
@@ -12,11 +13,13 @@ export const Connection = mysql.createConnection({
 export const Query = (query, values) => {
   return new Promise((resolve, reject) => {
     Connection.query(query, values, (err, results) => {
-      if (err) return reject(err);
-      return resolve(results);
+      if (err) throw err;
+      resolve(results);
     });
   });
 };
+
 export default {
   chirps,
-};
+  users
+}
